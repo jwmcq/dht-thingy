@@ -5,7 +5,7 @@ pub mod sensors;
 
 #[derive(Parser)]
 struct Cli {
-    pin: u32,
+    pin: u8,
     port: u32
 }
 
