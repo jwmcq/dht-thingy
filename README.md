@@ -1,6 +1,7 @@
 Usage: sensortest <PIN> <PORT>
 
 Arguments:
+
   \<PIN\>   
   \<PORT\>  
 
