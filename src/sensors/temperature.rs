@@ -1,17 +1,32 @@
-use dht_mmap_rust::{Dht, DhtType};
+use dht_mmap_rust::{Dht, DhtType, Reading};
 
-const PIN: usize = 7;
+// const PIN: usize = 17;
 
-pub fn read(pin: u8) -> Result<f32, String> {
-    let mut dht = Dht::new(DhtType::Dht11, PIN).unwrap();
+const ATTEMPTS_PER_READ: i32 = 10;
+const READ_ERR_MSG: &str = "Couldn't get a reading right now!";
+const OPEN_ERR_MSG: &str = "Couldn't open the sensor right now!";
 
-    for x in 1..10 {
-        let reading = match dht.read() {
-            Ok(rdg) => rdg.temperature(),
-            Err(_) => 0.0
-        };
 
-        println!("reading pin {}", reading);
+pub fn read(pin: usize) -> Result<Reading, String> {
+    let mut dht = match Dht::new(DhtType::Dht11, pin) {
+        Ok(d) => d,
+        Err(_) => {
+            return Err(OPEN_ERR_MSG.to_owned())
+        }
+    };
+
+    let mut readings = vec![];
+    for _ in 0..ATTEMPTS_PER_READ {
+        match dht.read() {
+            Ok(rdg) => readings.push(rdg),
+            Err(_) => {}
+        }
+    };
+
+    if readings.is_empty() {
+        Err(READ_ERR_MSG.to_owned())
+    } else {
+        Ok(readings[0])
     }
-    Ok(1.0)
 }
+

@@ -5,7 +5,6 @@ edition = "2021"
 
 [dependencies]
 clap = { version = "4.5", features = ["derive"] }
-linux-embedded-hal = { version = "0.4", features = ["gpio_cdev"] }
-dht11 = { version = "0.3" }
 rouille = "3.6.2"
 dht-mmap-rust = "0.1.0"
+# dht-mmap-rust = {path = "../dht-mmap-rust"}
