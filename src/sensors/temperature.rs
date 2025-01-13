@@ -1,7 +1,5 @@
 use dht_mmap_rust::{Dht, DhtType, Reading};
 
-// const PIN: usize = 17;
-
 const ATTEMPTS_PER_READ: i32 = 10;
 const READ_ERR_MSG: &str = "Couldn't get a reading right now!";
 const OPEN_ERR_MSG: &str = "Couldn't open the sensor right now!";
