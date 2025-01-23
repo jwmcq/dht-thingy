@@ -6,7 +6,8 @@ use crate::sensors::temperature;
 
 pub mod sensors;
 
-
+// okay so it turns out these units are non-standard. Gotta figure out
+// how to change that without blatting a month of readings
 fn format_response<T: Display, U: Display>(temp: T, hum: U) -> String {
    format!("\
 # TYPE temperature gauge
