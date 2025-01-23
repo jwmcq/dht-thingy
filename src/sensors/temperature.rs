@@ -5,26 +5,20 @@ const READ_ERR_MSG: &str = "Couldn't get a reading right now!";
 const OPEN_ERR_MSG: &str = "Couldn't open the sensor right now!";
 
 
-pub fn read(pin: usize) -> Result<Reading, String> {
+pub fn read(pin: usize) -> Result<Reading, &str> {
     let mut dht = match Dht::new(DhtType::Dht11, pin) {
         Ok(d) => d,
         Err(_) => {
-            return Err(OPEN_ERR_MSG.to_owned())
+            return Err(OPEN_ERR_MSG)
         }
     };
 
-    let mut readings = vec![];
+    let mut reading = Err(READ_ERR_MSG);
     for _ in 0..ATTEMPTS_PER_READ {
         match dht.read() {
-            Ok(rdg) => readings.push(rdg),
             Err(_) => {}
+            x => { reading = x; }
         }
     };
-
-    if readings.is_empty() {
-        Err(READ_ERR_MSG.to_owned())
-    } else {
-        Ok(readings[0])
-    }
+    reading
 }
-
